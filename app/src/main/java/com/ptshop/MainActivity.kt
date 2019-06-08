@@ -27,31 +27,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Log.i("back","back key")
-        var dialog = AlertDialog.Builder(this)
-        dialog.setTitle("PT-Shop")
-        dialog.setMessage("앱을 종료하시겠습니까?")
-        dialog.setIcon(R.mipmap.ic_launcher)
-        fun toast_p() {
-            finish()
-        }
-        fun toast_n(){
-            Log.d("MainActivity","close cancle")
-            //Toast.makeText(this, "Negative 버튼을 눌렀습니다.", Toast.LENGTH_SHORT).show()
-        }
-        var dialog_listener = object: DialogInterface.OnClickListener{
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                when(which){
-                    DialogInterface.BUTTON_POSITIVE ->
-                        toast_p()
-                    DialogInterface.BUTTON_NEGATIVE ->
-                        toast_n()
+        val webView = findViewById<View>(R.id.webview) as WebView
+        Log.i("MainActivity","back key"+ webView.canGoBack() )
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            var dialog = AlertDialog.Builder(this)
+            dialog.setTitle("PT-Shop")
+            dialog.setMessage("앱을 종료하시겠습니까?")
+            dialog.setIcon(R.mipmap.ic_launcher)
+            fun toast_p() {
+                finish()
+            }
+            fun toast_n() {
+                Log.d("MainActivity", "close cancle")
+                //Toast.makeText(this, "Negative 버튼을 눌렀습니다.", Toast.LENGTH_SHORT).show()
+            }
+            var dialog_listener = object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE ->
+                            toast_p()
+                        DialogInterface.BUTTON_NEGATIVE ->
+                            toast_n()
+                    }
                 }
             }
+            dialog.setPositiveButton("YES", dialog_listener)
+            dialog.setNegativeButton("NO", dialog_listener)
+            dialog.show()
         }
-        dialog.setPositiveButton("YES",dialog_listener)
-        dialog.setNegativeButton("NO",dialog_listener)
-        dialog.show()
         return
     }
 }
